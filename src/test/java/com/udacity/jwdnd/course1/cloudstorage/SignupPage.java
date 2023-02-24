@@ -22,6 +22,9 @@ public class SignupPage {
     @FindBy(id = "buttonSignUp")
     private WebElement signupButton;
 
+    @FindBy(id = "success-msg")
+    private WebElement successMessage;
+
     public SignupPage(WebDriver webDriver) {
         PageFactory.initElements(webDriver, this);
     }
@@ -33,6 +36,10 @@ public class SignupPage {
         this.passwordField.sendKeys(password);
 
         this.signupButton.click();
+    }
+
+    public Boolean isSignupSuccessful() {
+        return this.successMessage.getText().contains("You successfully signed up!");
     }
 
 
