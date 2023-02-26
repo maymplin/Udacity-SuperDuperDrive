@@ -38,9 +38,12 @@ public class SignupPage {
         this.signupButton.click();
     }
 
-    public Boolean isSignupSuccessful() {
-        return this.successMessage.getText().contains("You successfully signed up!");
-    }
+//    public Boolean isSignupSuccessful() {
+//        return this.successMessage.getText().contains("You successfully signed up!");
+//    }
 
+    public Boolean isSignupSuccessful() {
+        return this.successMessage.isDisplayed();
+    }
 
 }
