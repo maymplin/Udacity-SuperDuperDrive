@@ -37,7 +37,7 @@ class CloudStorageApplicationTests {
 			driver.quit();
 		}
 	}
-
+	
 	@Test
 	public void getLoginPage() {
 		driver.get("http://localhost:" + this.port + "/login");

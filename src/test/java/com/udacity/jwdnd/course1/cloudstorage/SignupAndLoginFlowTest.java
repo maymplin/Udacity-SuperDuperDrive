@@ -2,7 +2,7 @@ package com.udacity.jwdnd.course1.cloudstorage;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
-import org.openqa.selenium.By;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -22,7 +22,6 @@ public class SignupAndLoginFlowTest {
     @BeforeAll
     public static void beforeAll() {
         WebDriverManager.chromedriver().setup();
-        webDriverWait = new WebDriverWait(driver, 3);
     }
 
     @BeforeEach
@@ -31,7 +30,7 @@ public class SignupAndLoginFlowTest {
     }
 
     @AfterEach
-    public static void afterEach() {
+    public void afterEach() {
         driver.quit();
     }
 
@@ -50,6 +49,8 @@ public class SignupAndLoginFlowTest {
         String username = "brussell";
         String password = "newPassword";
 
+        webDriverWait = new WebDriverWait(driver, 3);
+
         // Sign-up new user
         driver.get(baseUrl + this.port + "/signup");
         webDriverWait.until(ExpectedConditions.titleContains("Sign Up"));
@@ -61,6 +62,9 @@ public class SignupAndLoginFlowTest {
 
         // Log in user
         driver.get(baseUrl + this.port + "/login");
+        webDriverWait.until(ExpectedConditions.titleContains("Login"));
+
+
     }
 
 
