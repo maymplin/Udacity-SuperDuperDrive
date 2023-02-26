@@ -19,6 +19,6 @@ public class SignupController {
 
     @PostMapping
     public String processSignup(@ModelAttribute User user, Model model) {
-        return "login";
+        return "signup";
     }
 }
