@@ -15,10 +15,11 @@
                     <button id="logout-button" type="submit" class="btn btn-secondary float-right">Logout</button>
                 </form>
             </div>
-            <div id="file-success-msg" th:if="${fileSuccess}" class="alert alert-success" role="alert">
+            <div id="file-success-msg" th:if="${fileSuccess}" class="alert alert-success" role="alert"
+                 style="width:60%">
                 <span th:text="${fileSuccess}"></span>
             </div>
-            <div id="file-error-msg" th:if="${fileError}" class="alert alert-danger" role="alert">
+            <div id="file-error-msg" th:if="${fileError}" class="alert alert-danger" role="alert" style="width:60%">
                 <span th:text="${fileError}"></span>
             </div>
 
