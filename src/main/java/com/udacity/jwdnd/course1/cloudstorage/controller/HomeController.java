@@ -16,7 +16,7 @@ import java.security.Principal;
 import java.util.List;
 
 @Controller
-@RequestMapping("/home")
+@RequestMapping("home")
 public class HomeController {
 
     private CredentialService credentialService;
@@ -40,6 +40,6 @@ public class HomeController {
 
         model.addAttribute("files", fileList);
 
-        return "/home";
+        return "home";
     }
 }
