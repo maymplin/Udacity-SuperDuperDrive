@@ -25,7 +25,7 @@
                 </nav>
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show active" id="nav-files" role="tabpanel" aria-labelledby="nav-files-tab">
-                        <form action="#" th:action="@{/files}" enctype="multipart/form-data" method="POST">
+                        <form action="#" th:action="@{/file-upload}" enctype="multipart/form-data" method="POST">
                             <div class="container">
                                 <div class="row" style="margin: 1em;">
                                     <div class="col-sm-2">
@@ -35,7 +35,8 @@
                                         <input type="file" class="form-control-file" id="fileUpload" name="fileUpload">
                                     </div>
                                     <div class="col-sm-4">
-                                        <button type="submit" class="btn btn-dark" id="uploadButton">Upload</button>
+                                        <button id="upload-button" type="submit" class="btn btn-dark" id="uploadButton">
+                                            Upload</button>
                                     </div>
                                 </div>
                             </div>

@@ -14,6 +14,9 @@ public interface FileMapper {
     @Select("SELECT * FROM files WHERE fileId = #{fileId}")
     File getFileByFileId(Integer fileId);
 
+    @Select("SELECT * FROM files WHERE filename = #{fileName}")
+    File getFileByFileName(String fileName);
+
     @Insert("INSERT INTO files WHERE (fileId, filename, contenttype, filesize, userid, filedata) " +
             "VALUES(#{fileId}, #{fileName}, #{contentType}, #{fileSize}, #{userId}, #{fileData})")
     @Options(useGeneratedKeys = true, keyProperty = "fileId")
