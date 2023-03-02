@@ -24,7 +24,8 @@ public class NoteController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("add")
+    // save a new note or update an existing note
+    @PostMapping("save")
     public RedirectView saveNote(Note note, Principal principal, RedirectAttributes redirectAttributes) {
         Integer userId = userService.getUser(principal.getName()).getUserId();
         Integer noteId;
@@ -35,13 +36,11 @@ public class NoteController {
         } else {
             noteId = note.getNoteId();
             if (noteId == null) {
-
                 // save new note
                 note.setUserId(userId);
                 noteService.addNote(note);
             } else {
-
-                // updating existing note
+                // update existing note
                 noteService.updateNote(note);
             }
         }

@@ -48,6 +48,8 @@ public class HomeController {
         model.addAttribute("notes", noteList);
 
         // Get all credentials for current user
+        List<Credential> credentialList = credentialService.getUserCredentials(userId);
+        model.addAttribute("credentials", credentialList);
 
         return "home";
     }
