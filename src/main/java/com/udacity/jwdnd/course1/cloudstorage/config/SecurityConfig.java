@@ -30,9 +30,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.formLogin()
                 .loginPage("/login")
-                .permitAll();
-
-        http.formLogin()
+                .loginProcessingUrl("/login")
+                .permitAll()
                 .defaultSuccessUrl("/home", true);
     }
 }
