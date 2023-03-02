@@ -21,9 +21,9 @@ import java.security.Principal;
 public class FileController {
 
     @Autowired
-    FileService fileService;
+    private FileService fileService;
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     // Referenced https://www.baeldung.com/spring-redirect-and-forward on redirect
     @PostMapping("upload")
