@@ -5,6 +5,7 @@ import com.udacity.jwdnd.course1.cloudstorage.service.CredentialService;
 import com.udacity.jwdnd.course1.cloudstorage.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -49,6 +50,26 @@ public class CredentialController {
             redirectAttributes.addFlashAttribute("fileSuccess", "Credential successfully saved.");
         } else {
             redirectAttributes.addFlashAttribute("fileError", errorMessage);
+        }
+
+        return new RedirectView("/home");
+    }
+
+    @RequestMapping("delete/{id}")
+    public RedirectView deleteCredential(@PathVariable String id, RedirectAttributes redirectAttributes) {
+        String deleteError = null;
+        Integer credentialId = Integer.parseInt(id);
+
+        if (credentialService.getCredential(credentialId) == null) {
+            deleteError = "There was an error deleting your credential. Please try again.";
+        } else {
+            credentialService.deleteCredential(credentialId);
+        }
+
+        if ( deleteError == null) {
+            redirectAttributes.addFlashAttribute("fileSuccess", "Credential successfully deleted.");
+        } else {
+            redirectAttributes.addFlashAttribute("fileError", deleteError);
         }
 
         return new RedirectView("/home");
