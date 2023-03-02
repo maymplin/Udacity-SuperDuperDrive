@@ -154,7 +154,9 @@
                                 <tbody>
                                 <tr th:each="credential : ${credentials}">
                                     <td>
-                                        <button type="button" class="btn btn-success">Edit</button>
+                                        <button type="button" class="btn btn-success"
+                                                th:onclick="showCredentialModal([[${credential.credentialId}]], [[${credential.url}]], [[${credential.username}]], [[${credential.password}]])">
+                                            Edit</button>
                                         <a th:href="@{/credentials/delete/{id}(id=${credential.credentialId})}"
                                            class="btn btn-danger">Delete</a>
                                     </td>
