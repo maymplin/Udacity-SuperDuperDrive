@@ -86,10 +86,11 @@ class CloudStorageApplicationTests {
 		// You may have to modify the element "success-msg" and the sign-up 
 		// success message below depening on the rest of your code.
 		*/
-		Assertions.assertTrue(driver.findElement(By.id("success-msg")).getText().contains("You successfully signed up!"));
+		 Assertions.assertTrue(driver.findElement(By.id("success-msg")).getText().contains("You successfully " +
+		 "signed up!"));
+
 	}
 
-	
 	
 	/**
 	 * PLEASE DO NOT DELETE THIS method.
@@ -192,7 +193,7 @@ class CloudStorageApplicationTests {
 		WebElement uploadButton = driver.findElement(By.id("uploadButton"));
 		uploadButton.click();
 		try {
-			webDriverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("success")));
+			webDriverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("success-msg")));
 		} catch (org.openqa.selenium.TimeoutException e) {
 			System.out.println("Large File upload failed");
 		}
