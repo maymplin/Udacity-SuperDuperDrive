@@ -25,6 +25,6 @@ public interface NoteMapper {
     @Update("UPDATE notes SET notetitle = #{noteTitle}, " +
             "notedescription = #{noteDescription} " +
             "WHERE noteId = #{noteId}")
-    void update(Integer noteId);
+    void update(Note note);
 
 }

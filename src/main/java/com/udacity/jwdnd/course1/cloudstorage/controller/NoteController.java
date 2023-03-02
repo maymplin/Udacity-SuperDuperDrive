@@ -25,15 +25,31 @@ public class NoteController {
     private UserService userService;
 
     @PostMapping("add")
-    public RedirectView addNote(Note note, Principal principal, RedirectAttributes redirectAttributes) {
+    public RedirectView saveNote(Note note, Principal principal, RedirectAttributes redirectAttributes) {
         Integer userId = userService.getUser(principal.getName()).getUserId();
+        Integer noteId;
+        String errorMessage = null;
 
-        note.setUserId(userId);
+        if (note == null) {
+            errorMessage = "There was an error saving your note. Please try again.";
+        } else {
+            noteId = note.getNoteId();
+            if (noteId == null) {
 
-        if (noteService.addNote(note) > 0) {
+                // save new note
+                note.setUserId(userId);
+                noteService.addNote(note);
+            } else {
+
+                // updating existing note
+                noteService.updateNote(note);
+            }
+        }
+
+        if (errorMessage == null) {
             redirectAttributes.addFlashAttribute("fileSuccess", "Note successfully saved.");
         } else {
-            redirectAttributes.addFlashAttribute("fileError", "There was an error saving your note. Please try again.");
+            redirectAttributes.addFlashAttribute("fileError", errorMessage);
         }
 
         return new RedirectView("/home");
