@@ -55,8 +55,22 @@ public class NoteController {
         return new RedirectView("/home");
     }
 
-    @PostMapping("delete/{id}")
+    @RequestMapping("delete/{id}")
     public RedirectView deleteNote(@PathVariable String id, RedirectAttributes redirectAttributes) {
+        String deleteError = null;
+        Integer noteId = Integer.parseInt(id);
+
+        if (noteService.getNote((noteId)) == null) {
+            deleteError = "There was an error deleting your note. Please try again.";
+        } else {
+            noteService.deleteNote(noteId);
+        }
+
+        if ( deleteError == null) {
+            redirectAttributes.addFlashAttribute("fileSuccess", "Note successfully deleted.");
+        } else {
+            redirectAttributes.addFlashAttribute("fileError", deleteError);
+        }
 
         return new RedirectView("/home");
     }
