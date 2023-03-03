@@ -16,8 +16,8 @@ public class NotesAndCredentialsTest {
     private int port;
     private static WebDriver driver;
     private static WebDriverWait webDriverWait;
-
-    private static HomePage homePage;
+    private static NotesPage notesPage;
+    private static LoginPage loginPage;
     private static String baseUrl = "http://localhost:";
     private static final String firstName = "Godfrey";
     private static final String lastName = "Hardy";
@@ -33,8 +33,8 @@ public class NotesAndCredentialsTest {
     public void beforeEach() {
         driver = new ChromeDriver();
         webDriverWait = new WebDriverWait(driver, 3);
-        homePage = new HomePage(driver, webDriverWait);
         baseUrl += port;
+        loginPage = new LoginPage(driver);
     }
 
     @AfterEach
@@ -48,44 +48,55 @@ public class NotesAndCredentialsTest {
     }
 
     private void doMockLogin(String username, String password) {
-        LoginPage loginPage = new LoginPage(driver);
+//        loginPage = new LoginPage(driver);
+        driver.get(baseUrl + "/login");
+        webDriverWait.until(ExpectedConditions.titleContains("Login"));
         loginPage.login(username, password);
+    }
+
+    private void doMockLogout() {
+        loginPage.logout();
     }
 
     @Test
     public void noteCreationEditDeleteTest() {
+        notesPage = new NotesPage(driver, webDriverWait);
 
         // Sign-up and log-in
         driver.get(baseUrl + "/signup");
         webDriverWait.until(ExpectedConditions.titleContains("Sign Up"));
         SignupPage signupPage = new SignupPage(driver);
         doMockSignup(firstName, lastName, username, password);
-
-        driver.get(baseUrl + "/login");
-        webDriverWait.until(ExpectedConditions.titleContains("Login"));
         doMockLogin(username, password);
-
         webDriverWait.until(ExpectedConditions.titleContains("Home"));
 
         // Create note
-        homePage.createNote("Test", "Hello world!");
+        notesPage.createNote("Test", "Hello world!");
 
+        // Logout and re-login
+        doMockLogout();
+        doMockLogin(username, password);
         webDriverWait.until(ExpectedConditions.titleContains("Home"));
 
         // Verify note is visible
-        Assertions.assertEquals("Test", homePage.retrieveNoteTitle());
+        Assertions.assertEquals("Test", notesPage.retrieveNoteTitle());
         webDriverWait.until(ExpectedConditions.titleContains("Home"));
 
         // Edit note by changing its title
-        homePage.editNoteTitle("Edited Test");
+        notesPage.editNoteTitle("Edited Test");
 
         // Verify note is edited
-        Assertions.assertEquals("Edited Test", homePage.retrieveNoteTitle());
+        Assertions.assertEquals("Edited Test", notesPage.retrieveNoteTitle());
+
+        // Logout and re-login
+        doMockLogout();
+        doMockLogin(username, password);
+        webDriverWait.until(ExpectedConditions.titleContains("Home"));
 
         // Delete note
-        homePage.deleteNote();
+        notesPage.deleteNote();
 
         // Verify note is deleted by checking that it is no longer displayed
-        Assertions.assertFalse(homePage.isNoteDisplayed());
+        Assertions.assertFalse(notesPage.isNoteDisplayed());
     }
 }
