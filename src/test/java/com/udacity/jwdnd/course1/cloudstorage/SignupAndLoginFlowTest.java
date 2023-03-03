@@ -3,7 +3,6 @@ package com.udacity.jwdnd.course1.cloudstorage;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -19,6 +18,10 @@ public class SignupAndLoginFlowTest {
     private static WebDriver driver;
     private static WebDriverWait webDriverWait;
     private static final String baseUrl = "http://localhost:";
+    private static final String firstName = "Bertrand";
+    private static final String lastName = "Russell";
+    private static final String username = "brussell";
+    private static final String password = "password";
 
     @BeforeAll
     public static void beforeAll() {
@@ -35,20 +38,18 @@ public class SignupAndLoginFlowTest {
         driver.quit();
     }
 
-    @Test
-    public void unauthorizedAccessTest() {
+    private void doMockSignup(String firstName, String lastName, String username, String password) {
+        SignupPage signupPage = new SignupPage(driver);
+        signupPage.signup(firstName, lastName, username, password);
+    }
 
-        driver.get(baseUrl + port + "/home");
-
+    private void doMockLogin(String username, String password) {
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.login(username, password);
     }
 
     @Test
     public void signupLoginHomeAccessTest() {
-
-        String firstName = "Bertrand";
-        String lastName = "Russell";
-        String username = "brussell";
-        String password = "newPassword";
 
         webDriverWait = new WebDriverWait(driver, 3);
 
@@ -57,17 +58,39 @@ public class SignupAndLoginFlowTest {
         webDriverWait.until(ExpectedConditions.titleContains("Sign Up"));
 
         SignupPage signupPage = new SignupPage(driver);
-        signupPage.signup(firstName, lastName, username, password);
+        doMockSignup(firstName, lastName, username, password);
 
         Assertions.assertTrue(signupPage.isSignupSuccessful());
 
-        // Log in user
-//        driver.get(baseUrl + this.port + "/login");
-//        webDriverWait.until(ExpectedConditions.titleContains("Login"));
+        // Log in
+        driver.get(baseUrl + this.port + "/login");
+        webDriverWait.until(ExpectedConditions.titleContains("Login"));
 
+        doMockLogin(username, password);
 
+        Assertions.assertEquals("Home", driver.getTitle());
     }
 
+    @Test
+    public void unauthorizedAccessTest() {
+        driver.get(baseUrl + this.port + "/signup");
+        doMockSignup(firstName, lastName, username, password);
+        webDriverWait = new WebDriverWait(driver, 3);
+        driver.get(baseUrl + this.port + "/login");
+        webDriverWait.until(ExpectedConditions.titleContains("Login"));
+        doMockLogin(username, password);
 
+        // Log out
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.logout();
 
+        // Verify user is logged out
+        Assertions.assertEquals(baseUrl + this.port + "/login", driver.getCurrentUrl());
+
+        // Try to access home page
+        driver.get(baseUrl + this.port + "/home");
+
+        // Should be redirected to login page
+        Assertions.assertEquals(baseUrl + this.port + "/login", driver.getCurrentUrl());
+    }
 }
