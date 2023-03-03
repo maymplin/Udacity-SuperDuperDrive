@@ -30,46 +30,47 @@ public class CredentialsPage {
         this.webDriverWait = webDriverWait;
     }
 
-//    public void createNote(String credentialUrl, String credentialUsername, String credentialPassword) {
-//        this.credentialsTabButton.click();
-//
-//        this.webDriverWait.until(ExpectedConditions.elementToBeClickable(By.id("add-note")));
-//        driver.findElement(By.id("add-note")).click();
-//        this.webDriverWait.until(ExpectedConditions.elementToBeClickable(By.id("create-note-button")));
-//        this.noteTitleField.sendKeys(noteTitle);
-//        this.noteDescriptionField.sendKeys(noteDescription);
-//        driver.findElement(By.id("create-note-button")).click();
-//
-//    }
-//
-//    public String retrieveNoteTitle() {
-//        this.notesTabButton.click();
-//        this.webDriverWait.until(ExpectedConditions.elementToBeClickable(By.id("add-note")));
-//
-//        return this.driver.findElement(By.className("noteTitle")).getText();
-//    }
-//
-//    public void editNoteTitle(String newNoteTitle) {
-//        this.notesTabButton.click();
-//        this.webDriverWait.until(ExpectedConditions.elementToBeClickable(By.id("add-note")));
-//        this.editNoteButton.click();
-//        this.webDriverWait.until(ExpectedConditions.elementToBeClickable(By.id("create-note-button")));
-//        this.noteTitleField.clear();
-//        this.noteTitleField.sendKeys(newNoteTitle);
-//        this.driver.findElement(By.id("create-note-button")).click();
-//    }
-//
-//    public void deleteNote() {
-//        this.notesTabButton.click();
-//        this.webDriverWait.until(ExpectedConditions.elementToBeClickable(By.id("add-note")));
-//        this.driver.findElement(By.id("delete-note")).click();
-//    }
-//
-//    public Boolean isNoteDisplayed() {
-//        this.notesTabButton.click();
-//        this.webDriverWait.until(ExpectedConditions.elementToBeClickable(By.id("add-note")));
-//
-//        return this.driver.findElement(By.id("note-title")).isDisplayed();
-//
-//    }
+    public void createCredential(String credentialUrl, String credentialUsername, String credentialPassword) {
+        this.credentialsTabButton.click();
+
+        this.webDriverWait.until(ExpectedConditions.elementToBeClickable(By.id("add-credential")));
+        driver.findElement(By.id("add-credential")).click();
+        this.webDriverWait.until(ExpectedConditions.elementToBeClickable(By.id("create-cred-button")));
+        this.credentialUrlField.sendKeys(credentialUrl);
+        this.credentialUsernameField.sendKeys(credentialUsername);
+        this.credentialPasswordField.sendKeys(credentialPassword);
+        driver.findElement(By.id("create-cred-button")).click();
+
+    }
+
+    public String retrieveCredentialUsername() {
+        this.credentialsTabButton.click();
+        this.webDriverWait.until(ExpectedConditions.elementToBeClickable(By.id("add-credential")));
+
+        return this.driver.findElement(By.className("credential-username")).getText();
+    }
+
+    public void editCredentialUsername(String newUsername) {
+        this.credentialsTabButton.click();
+        this.webDriverWait.until(ExpectedConditions.elementToBeClickable(By.id("add-credential")));
+        this.editCredentialButton.click();
+        this.webDriverWait.until(ExpectedConditions.elementToBeClickable(By.id("create-cred-button")));
+        this.credentialUsernameField.clear();
+        this.credentialUsernameField.sendKeys(newUsername);
+        this.driver.findElement(By.id("create-cred-button")).click();
+    }
+
+    public void deleteCredential() {
+        this.credentialsTabButton.click();
+        this.webDriverWait.until(ExpectedConditions.elementToBeClickable(By.id("add-credential")));
+        this.driver.findElement(By.className("delete-credential")).click();
+    }
+
+    public Boolean isCredentialDisplayed() {
+        this.credentialsTabButton.click();
+        this.webDriverWait.until(ExpectedConditions.elementToBeClickable(By.id("add-credential")));
+
+        return this.driver.findElement(By.id("credential-url")).isDisplayed();
+
+    }
 }

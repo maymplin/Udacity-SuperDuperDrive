@@ -1,5 +1,6 @@
 package com.udacity.jwdnd.course1.cloudstorage;
 
+import com.udacity.jwdnd.course1.cloudstorage.model.Credential;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
@@ -16,9 +17,8 @@ public class NotesAndCredentialsTest {
     private int port;
     private static WebDriver driver;
     private static WebDriverWait webDriverWait;
-    private static NotesPage notesPage;
     private static LoginPage loginPage;
-    private static String baseUrl = "http://localhost:";
+    private static String baseUrl;
     private static final String firstName = "Godfrey";
     private static final String lastName = "Hardy";
     private static final String username = "ghhardy";
@@ -33,7 +33,7 @@ public class NotesAndCredentialsTest {
     public void beforeEach() {
         driver = new ChromeDriver();
         webDriverWait = new WebDriverWait(driver, 3);
-        baseUrl += port;
+        baseUrl = "http://localhost:" + port;
         loginPage = new LoginPage(driver);
     }
 
@@ -48,7 +48,6 @@ public class NotesAndCredentialsTest {
     }
 
     private void doMockLogin(String username, String password) {
-//        loginPage = new LoginPage(driver);
         driver.get(baseUrl + "/login");
         webDriverWait.until(ExpectedConditions.titleContains("Login"));
         loginPage.login(username, password);
@@ -60,12 +59,11 @@ public class NotesAndCredentialsTest {
 
     @Test
     public void noteCreationEditDeleteTest() {
-        notesPage = new NotesPage(driver, webDriverWait);
+        NotesPage notesPage = new NotesPage(driver, webDriverWait);
 
         // Sign-up and log-in
         driver.get(baseUrl + "/signup");
         webDriverWait.until(ExpectedConditions.titleContains("Sign Up"));
-        SignupPage signupPage = new SignupPage(driver);
         doMockSignup(firstName, lastName, username, password);
         doMockLogin(username, password);
         webDriverWait.until(ExpectedConditions.titleContains("Home"));
@@ -80,6 +78,10 @@ public class NotesAndCredentialsTest {
 
         // Verify note is visible
         Assertions.assertEquals("Test", notesPage.retrieveNoteTitle());
+
+        // Logout and re-login
+        doMockLogout();
+        doMockLogin(username, password);
         webDriverWait.until(ExpectedConditions.titleContains("Home"));
 
         // Edit note by changing its title
@@ -98,5 +100,50 @@ public class NotesAndCredentialsTest {
 
         // Verify note is deleted by checking that it is no longer displayed
         Assertions.assertFalse(notesPage.isNoteDisplayed());
+    }
+
+    @Test
+    public void credentialCreationEditDeleteTest() {
+        CredentialsPage credentialsPage = new CredentialsPage(driver, webDriverWait);
+
+        // Sign-up and log-in
+        driver.get(baseUrl + "/signup");
+        webDriverWait.until(ExpectedConditions.titleContains("Sign Up"));
+        doMockSignup(firstName, lastName, username, password);
+        doMockLogin(username, password);
+        webDriverWait.until(ExpectedConditions.titleContains("Home"));
+
+        // Create credential
+        credentialsPage.createCredential("http://www.gmail.com", "ghhardy", "testPassword");
+
+        // Logout and re-login
+        doMockLogout();
+        doMockLogin(username, password);
+        webDriverWait.until(ExpectedConditions.titleContains("Home"));
+
+        // Verify note is visible
+        Assertions.assertEquals("ghhardy", credentialsPage.retrieveCredentialUsername());
+
+        // Logout and re-login
+        doMockLogout();
+        doMockLogin(username, password);
+        webDriverWait.until(ExpectedConditions.titleContains("Home"));
+
+        // Edit credential by changing its username
+        credentialsPage.editCredentialUsername("godfrey");
+
+        // Verify credential is edited
+        Assertions.assertEquals("godfrey", credentialsPage.retrieveCredentialUsername());
+
+        // Logout and re-login
+        doMockLogout();
+        doMockLogin(username, password);
+        webDriverWait.until(ExpectedConditions.titleContains("Home"));
+
+        // Delete credential
+        credentialsPage.deleteCredential();
+
+        // Verify credential is deleted by checking that it is no longer displayed
+        Assertions.assertFalse(credentialsPage.isCredentialDisplayed());
     }
 }
