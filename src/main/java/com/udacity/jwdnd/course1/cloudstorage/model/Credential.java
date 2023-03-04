@@ -8,6 +8,7 @@ public class Credential {
     private String key;
     private String password;
     private Integer userId;
+    private String encryptedPassword;
 
     public Integer getCredentialId() {
         return credentialId;
@@ -55,5 +56,13 @@ public class Credential {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public String getEncryptedPassword() {
+        return encryptedPassword;
+    }
+
+    public void setEncryptedPassword(String encryptedPassword) {
+        this.encryptedPassword = encryptedPassword;
     }
 }

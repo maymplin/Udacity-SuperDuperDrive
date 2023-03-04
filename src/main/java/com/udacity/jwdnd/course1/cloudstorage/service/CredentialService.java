@@ -19,13 +19,25 @@ public class CredentialService {
         this.encryptionService = encryptionService;
     }
 
+//    public int saveCredential(Credential credential) {
+//        Integer credentialId = credential.getCredentialId();
+//        String encodedKey = generateEncodedKey();
+//        String encryptedPassword = encryptString(credential.getPassword(), encodedKey);
+//
+//        credential.setKey(encodedKey);
+//        credential.setPassword(encryptedPassword);
+//
+//        if (credentialId == null || credentialId < 0) {
+//            credentialId = addCredential(credential);
+//        } else {
+//            updateCredential(credential);
+//        }
+//
+//        return credentialId;
+//    }
+
     public int saveCredential(Credential credential) {
         Integer credentialId = credential.getCredentialId();
-        String encodedKey = generateEncodedKey();
-        String encryptedPassword = encryptString(credential.getPassword(), encodedKey);
-
-        credential.setKey(encodedKey);
-        credential.setPassword(encryptedPassword);
 
         if (credentialId == null || credentialId < 0) {
             credentialId = addCredential(credential);
@@ -53,8 +65,17 @@ public class CredentialService {
     }
 
     public List<Credential> getUserCredentials(Integer userId) {
-        return credentialMapper.getCredentialsByUserId(userId);
+        List<Credential> allCredentials = credentialMapper.getCredentialsByUserId(userId);
+
+        allCredentials.forEach(
+                credential -> credential.setEncryptedPassword(encryptString(credential.getPassword(), generateEncodedKey())));
+
+        return allCredentials;
     }
+
+//    public List<Credential> getUserCredentials(Integer userId) {
+//        return credentialMapper.getCredentialsByUserId(userId);
+//    }
 
     public String generateEncodedKey() {
         SecureRandom random = new SecureRandom();
