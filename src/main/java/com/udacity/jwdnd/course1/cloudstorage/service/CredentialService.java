@@ -27,7 +27,7 @@ public class CredentialService {
         credential.setKey(encodedKey);
         credential.setPassword(encryptedPassword);
 
-        if (credentialId == null) {
+        if (credentialId == null || credentialId < 0) {
             credentialId = addCredential(credential);
         } else {
             updateCredential(credential);
