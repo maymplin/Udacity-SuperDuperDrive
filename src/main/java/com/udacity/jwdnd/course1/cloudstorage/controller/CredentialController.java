@@ -27,23 +27,17 @@ public class CredentialController {
     @PostMapping("save")
     public RedirectView saveCredential(Credential credential, Principal principal,
                                        RedirectAttributes redirectAttributes) {
-        Integer userId = userService.getUser(principal.getName()).getUserId();
-        Integer credentialId;
         String errorMessage = null;
 
         if (credential == null) {
             errorMessage = "There was an error saving your credential. Please try again.";
         } else {
-            credentialId = credential.getCredentialId();
 
-            if (credentialId == null) {
-                // save new credential
+            if (credential.getCredentialId() == null) {
+                Integer userId = userService.getUser(principal.getName()).getUserId();
                 credential.setUserId(userId);
-                credentialService.addCredential(credential);
-            } else {
-                // update existing credential
-                credentialService.updateCredential(credential);
             }
+            credentialService.saveCredential(credential);
         }
 
         if (errorMessage == null) {
