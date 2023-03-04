@@ -5,23 +5,17 @@ import com.udacity.jwdnd.course1.cloudstorage.service.FileService;
 import com.udacity.jwdnd.course1.cloudstorage.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
-import java.nio.file.Files;
 import java.security.Principal;
 
 @Controller
